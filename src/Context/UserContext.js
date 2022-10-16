@@ -1,5 +1,5 @@
-import React, { createContext, useState } from 'react';
-import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut} from 'firebase/auth'
+import React, { createContext, useEffect, useState } from 'react';
+import {createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut} from 'firebase/auth'
 import app from '../Firebase/Firebase.config'
 
 export const AuthContext=createContext();
@@ -27,8 +27,19 @@ const UserContext = ({children}) => {
         return signOut(auth)
     }
 
+    // 5 -- show email in navbar
+
+    useEffect(()=>{
+        const unSubscribe= onAuthStateChanged(auth, currentUser=>{
+             console.log('current user',currentUser)
+             setUser(currentUser)
+         });
+         return()=>unSubscribe()
+ 
+     },[])
+ 
     
-    const authInfo={user, createUser, signIn, signOut}
+    const authInfo={user, createUser, signIn, signOut, logOut}
     return (
             <AuthContext.Provider value={authInfo}>
                 {children}

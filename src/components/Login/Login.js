@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/UserContext';
 import './Login.css'
 
@@ -7,6 +7,8 @@ const Login = () => {
 
     // 3
       const {signIn}=useContext(AuthContext)
+    //   6
+    const navigate=useNavigate();
 
     const handleSubmit=(event)=>{
         event.preventDefault()
@@ -20,6 +22,9 @@ const Login = () => {
         .then(result=>{
             const user=result.user;
             console.log(user)
+            form.reset()
+            // 6
+            navigate('/')
         })
         .catch(error=>
         console.error('error',error))
@@ -39,7 +44,7 @@ const Login = () => {
                     <label htmlFor="password">Password</label>
                     <input type="password"  name='password' placeholder='password' required/>
                 </div>
-                <button>Login</button>
+                <button >Login</button>
 
             </form>
             <p className='pi'>new to Ema-Jhon <Link to='/signUp'>Create a new Account</Link></p>
